@@ -1,5 +1,5 @@
 NAME=leap
-VERSION=15.5
+VERSION=15.6
 VERSION_NO_DOT=`echo ${VERSION} | sed 's:\.::g'`
 THEME=openSUSE
 
@@ -78,19 +78,17 @@ CLEAN_DEPS+=libreoffice.d_clean
 wallpaper.d:
 	mkdir -p openSUSE/wallpapers openSUSE/wallpapers/openSUSEdefault/contents/images
 	for size in 5120x3200 3840x2400 1280x1024 1600x1200 1920x1080 1920x1200 1350x1080 1440x1080; do \
-		rsvg-convert raw-theme-drop/desktop-$${size}.svg -o tmp-$@.png; \
-		gm convert -quality 100 -interlace None -colorspace YCbCr -sampling-factor 2x2 tmp-$@.png openSUSE/wallpapers/openSUSEdefault/contents/images/$${size}.jpg; \
-		rm tmp-$@.png; \
+		rsvg-convert raw-theme-drop/desktop-$${size}.svg -o openSUSE/wallpapers/openSUSEdefault/contents/images/$${size}.png; \
+		optipng -o5 openSUSE/wallpapers/openSUSEdefault/contents/images/$${size}.png; \
 	done
 	for size in 1600x1200 1920x1200 1920x1080; do \
-		cp wallpapers/default-$${size}.jpg.desktop openSUSE/wallpapers; \
-		sed "s:@VERSION@:${VERSION}:g;s:@VERSION_NO_DOT@:${VERSION_NO_DOT}:g" wallpapers/openSUSE-$${size}.jpg.desktop.in > openSUSE/wallpapers/openSUSE${VERSION_NO_DOT}-$${size}.jpg.desktop; \
-		ln -sf openSUSE${VERSION_NO_DOT}-$${size}.jpg openSUSE/wallpapers/default-$${size}.jpg; \
-		ln -sf openSUSEdefault/contents/images/$${size}.jpg openSUSE/wallpapers/openSUSE${VERSION_NO_DOT}-$${size}.jpg; \
+		cp wallpapers/default-$${size}.png.desktop openSUSE/wallpapers; \
+		sed "s:@VERSION@:${VERSION}:g;s:@VERSION_NO_DOT@:${VERSION_NO_DOT}:g" wallpapers/openSUSE-$${size}.png.desktop.in > openSUSE/wallpapers/openSUSE${VERSION_NO_DOT}-$${size}.png.desktop; \
+		ln -sf openSUSE${VERSION_NO_DOT}-$${size}.png openSUSE/wallpapers/default-$${size}.png; \
+		ln -sf openSUSEdefault/contents/images/$${size}.png openSUSE/wallpapers/openSUSE${VERSION_NO_DOT}-$${size}.png; \
 	done
-	rsvg-convert raw-theme-drop/desktop-1920x1200.svg -o tmp-$@.png
-	gm convert -quality 100 -interlace None -colorspace YCbCr -sampling-factor 2x2 tmp-$@.png openSUSE/wallpapers/openSUSEdefault/screenshot.jpg
-	rm tmp-$@.png
+	rsvg-convert raw-theme-drop/desktop-1920x1200.svg -o openSUSE/wallpapers/openSUSEdefault/screenshot.png
+	optipng -o5 openSUSE/wallpapers/openSUSEdefault/screenshot.png
 	cp -p kde-workspace/metadata.desktop openSUSE/wallpapers/openSUSEdefault/metadata.desktop
 
 wallpaper.d_clean:
@@ -171,7 +169,7 @@ check: # do not add requires here, this runs from generated openSUSE
 	  done ; \
 	done
 	# Check that xml files reference all relevant files
-	for file in ${DESTDIR}/usr/share/wallpapers/openSUSEdefault/contents/images/*.jpg; do \
+	for file in ${DESTDIR}/usr/share/wallpapers/openSUSEdefault/contents/images/*.png; do \
 	   IMG=$${file#${DESTDIR}} ; \
 	   grep -q $${IMG} ${DESTDIR}/usr/share/wallpapers/openSUSE-default-static.xml || { echo "$${IMG} not mentioned in openSUSE-default-static.xml. Please add it there, or contact the GNOME team for help." ; exit 1 ;} ; \
 	done

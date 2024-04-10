@@ -11,7 +11,7 @@ dynamic-wallpaper.xml.in: file used to create the dynamic wallpaper used by GNOM
 
 xfce.png: splash screen visible during XFCE login
 
-desktop-\*.svg / .jpg used for wallpapers
+desktop-\*.svg / .png used for wallpapers
 
 ## How to update the wallpaper in the distribution
 
